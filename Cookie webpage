@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Example</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  #cookieDisplay {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+  }
+</style>
+</head>
+<body>
+
+<h2>Cookie Example</h2>
+<div id="cookieDisplay"></div>
+
+<script>
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days*24*60*60*1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
+// Function to display the cookie
+function displayCookie() {
+  var userVisitCookie = getCookie("userVisit");
+  if (userVisitCookie) {
+    document.getElementById("cookieDisplay").innerText = "Your last visit was on: " + userVisitCookie;
+  } else {
+    document.getElementById("cookieDisplay").innerText = "This is your first visit!";
+  }
+}
+
+// Setting the cookie with the current date and time on page load
+window.onload = function() {
+  var now = new Date();
+  var visitTime = now.toUTCString();
+  setCookie("userVisit", visitTime, 7); // Expires in 7 days
+  displayCookie();
+}
+</script>
+
+</body>
+</html>
